@@ -1,26 +1,104 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-navy-950: #071428;
+  --color-navy-900: #0b1f3a;
+  --color-navy-800: #12305a;
+  --color-navy-700: #1b4478;
+  --color-mint-300: #7ff0cf;
+  --color-mint-400: #34e0b0;
+  --color-mint-500: #14c796;
+  --color-mint-600: #0e9f78;
+  --color-canvas: #f3f6fa;
+  --color-ink: #0f1d33;
+  --color-muted: #5b6b82;
+  --font-sans: var(--font-sarabun), ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* ---------- Decorative credit-card stack (CSS only, no real data) ---------- */
+.card-stack {
+  position: relative;
+  width: min(100%, 22rem);
+  aspect-ratio: 1.586 / 1;
+  margin-inline: auto;
+  perspective: 1200px;
+}
+.card-stack .cc {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  color: #fff;
+  box-shadow: 0 24px 48px -16px rgb(7 20 40 / 0.55);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform-origin: 50% 100%;
+  animation: cc-float 7s ease-in-out infinite;
+}
+.cc-1 {
+  background: linear-gradient(135deg, #1b4478, #12305a);
+  --tx: -10%; --ty: -16%; --rot: -9deg;
+  animation-delay: -2s;
+}
+.cc-2 {
+  background: linear-gradient(135deg, #0e9f78, #14c796);
+  --tx: 6%; --ty: -8%; --rot: -3deg;
+  animation-delay: -1s;
+}
+.cc-3 {
+  background: linear-gradient(135deg, #0b1f3a, #071428);
+  --tx: 0%; --ty: 4%; --rot: 4deg;
+  border: 1px solid rgb(255 255 255 / 0.12);
+}
+.cc-chip {
+  width: 2.4rem;
+  height: 1.8rem;
+  border-radius: 0.4rem;
+  background: linear-gradient(135deg, #f5d98b, #d8a93c);
+}
+.cc-dots { letter-spacing: 0.25em; font-size: 1.05rem; opacity: 0.9; }
+
+@keyframes cc-float {
+  0%, 100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); }
+  50% { transform: translate(var(--tx), calc(var(--ty) - 3%)) rotate(calc(var(--rot) + 1.5deg)); }
+}
+
+/* ---------- Subtle dashboard transitions ---------- */
+.rise {
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.bar {
+  transform-origin: left;
+  animation: grow 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.row-in { animation: rise 0.35s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-stack .cc {
+    animation: none;
+    transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+  }
+  .rise, .bar, .row-in { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-mint-500);
+  outline-offset: 2px;
 }
